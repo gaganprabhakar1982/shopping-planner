@@ -16,7 +16,6 @@ import {
 import { useAuth } from '../context/AuthContext'
 import { useShoppingList } from '../hooks/useShoppingList'
 import { useMasterList } from '../hooks/useMasterList'
-import Modal from '../components/ui/Modal'
 
 export default function SettingsPage() {
   const { user, logout } = useAuth()
@@ -90,7 +89,9 @@ export default function SettingsPage() {
     <div className="relative min-h-screen bg-[#FAFBFC]">
       {/* Header */}
       <header className="px-5 pt-4 pb-5 bg-[#FAFBFC]">
-        <h1 className="text-2xl font-bold text-[#1A1D21] tracking-tight mb-5">Settings</h1>
+        <h1 className="text-2xl font-bold text-[#1A1D21] tracking-tight mb-5">
+          Settings
+        </h1>
 
         {/* Profile Card */}
         <div className="bg-gradient-to-br from-orange-500 to-orange-700 rounded-[20px] px-5 py-5 flex items-center gap-4 shadow-[0_8px_24px_rgba(249,115,22,0.25)] slide-up">
@@ -103,7 +104,7 @@ export default function SettingsPage() {
             </p>
             <p className="text-[13px] text-white/80 truncate">{user?.email}</p>
           </div>
-          <button className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center hover:bg-white/30 transition-colors">
+          <button className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center hover:bg-white/30 transition-colors active:scale-95">
             <Edit3 className="w-5 h-5 text-white" />
           </button>
         </div>
@@ -113,34 +114,30 @@ export default function SettingsPage() {
       <main className="px-5 pb-32">
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-3 mb-7 slide-up" style={{ animationDelay: '0.1s' }}>
-          <div className="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-            <div className="w-9 h-9 bg-blue-50 rounded-xl flex items-center justify-center mb-3">
-              <Calendar className="w-5 h-5 text-blue-500" />
-            </div>
-            <p className="text-2xl font-bold text-[#1A1D21] mb-0.5">{currentMonth}</p>
-            <p className="text-xs font-medium text-gray-400">Current Month</p>
-          </div>
-          <div className="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-            <div className="w-9 h-9 bg-emerald-50 rounded-xl flex items-center justify-center mb-3">
-              <Check className="w-5 h-5 text-emerald-500" />
-            </div>
-            <p className="text-2xl font-bold text-[#1A1D21] mb-0.5">{completedItems.length}</p>
-            <p className="text-xs font-medium text-gray-400">Items Bought</p>
-          </div>
-          <div className="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-            <div className="w-9 h-9 bg-purple-50 rounded-xl flex items-center justify-center mb-3">
-              <BarChart3 className="w-5 h-5 text-purple-500" />
-            </div>
-            <p className="text-2xl font-bold text-[#1A1D21] mb-0.5">{activeItems.length}</p>
-            <p className="text-xs font-medium text-gray-400">Pending</p>
-          </div>
-          <div className="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-            <div className="w-9 h-9 bg-orange-50 rounded-xl flex items-center justify-center mb-3">
-              <List className="w-5 h-5 text-orange-500" />
-            </div>
-            <p className="text-2xl font-bold text-[#1A1D21] mb-0.5">{masterItems.length}</p>
-            <p className="text-xs font-medium text-gray-400">Master Items</p>
-          </div>
+          <StatCard
+            icon={Calendar}
+            iconColor="bg-blue-50 text-blue-500"
+            value={currentMonth}
+            label="Current Month"
+          />
+          <StatCard
+            icon={Check}
+            iconColor="bg-emerald-50 text-emerald-500"
+            value={completedItems.length}
+            label="Items Bought"
+          />
+          <StatCard
+            icon={BarChart3}
+            iconColor="bg-purple-50 text-purple-500"
+            value={activeItems.length}
+            label="Pending"
+          />
+          <StatCard
+            icon={List}
+            iconColor="bg-orange-50 text-orange-500"
+            value={masterItems.length}
+            label="Master Items"
+          />
         </div>
 
         {/* List Management */}
@@ -223,7 +220,7 @@ export default function SettingsPage() {
       {/* Confirmation Modal */}
       {confirmAction && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-5 modal-scale"
+          className="fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-fade"
           onClick={() => setConfirmAction(null)}
         >
           <div className="fixed inset-0 bg-black/50" />
@@ -266,6 +263,18 @@ export default function SettingsPage() {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+function StatCard({ icon: Icon, iconColor, value, label }) {
+  return (
+    <div className="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+      <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${iconColor}`}>
+        <Icon className="w-5 h-5" />
+      </div>
+      <p className="text-2xl font-bold text-[#1A1D21] mb-0.5">{value}</p>
+      <p className="text-xs font-medium text-gray-400">{label}</p>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Search, Plus, Check, PackagePlus } from 'lucide-react'
+import { Search, Plus, Check } from 'lucide-react'
 import { useMasterList } from '../hooks/useMasterList'
 import { useShoppingList } from '../hooks/useShoppingList'
 import CategorySection from '../components/master/CategorySection'
@@ -85,10 +85,15 @@ export default function MasterListPage() {
       {/* Header */}
       <header className="sticky top-0 z-10 bg-[#FAFBFC] px-5 pt-4 pb-0">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-[#1A1D21] tracking-tight">Master List</h1>
+          <h1 className="text-2xl font-bold text-[#1A1D21] tracking-tight">
+            Master List
+          </h1>
+          {/* Items count badge */}
           <div className="flex items-center gap-1.5 bg-teal-50 px-3.5 py-2 rounded-full">
             <Check className="w-4 h-4 text-teal-500" strokeWidth={2.5} />
-            <span className="text-[13px] font-semibold text-teal-500">{items.length} items</span>
+            <span className="text-[13px] font-semibold text-teal-500">
+              {items.length} items
+            </span>
           </div>
         </div>
 
@@ -109,7 +114,7 @@ export default function MasterListPage() {
       <div className="px-5 pb-32 space-y-3">
         {Object.keys(groupedItems).length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 px-4">
-            <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 text-3xl">
+            <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 text-3xl empty-icon">
               📋
             </div>
             <p className="text-base font-semibold text-[#1A1D21] mb-1">

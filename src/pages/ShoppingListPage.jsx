@@ -38,7 +38,7 @@ function ProgressRing({ progress, size = 52, strokeWidth = 4 }) {
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+          className="progress-ring-fill"
         />
       </svg>
       <span className="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-emerald-500">
@@ -131,20 +131,29 @@ export default function ShoppingListPage() {
     <div className="relative min-h-screen bg-[#FAFBFC]">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-[#FAFBFC] px-5 pt-4 pb-5">
+        {/* Top row: Month selector + Progress ring */}
         <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB]">
-            <h1 className="text-[15px] font-semibold text-[#1A1D21] tracking-tight">{monthYear}</h1>
+          {/* Month Selector - Pill button with shadow */}
+          <button className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB] hover:shadow-md transition-shadow">
+            <h1 className="text-[15px] font-semibold text-[#1A1D21] tracking-tight">
+              {monthYear}
+            </h1>
             <ChevronDown className="w-4 h-4 text-gray-400" />
-          </div>
+          </button>
+          
+          {/* Progress Ring */}
           <ProgressRing progress={progress} />
         </div>
 
+        {/* Stats Pills */}
         <div className="flex gap-3">
-          <div className="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB] text-[13px] font-medium text-gray-500">
-            <span className="font-bold text-orange-500">{activeItems.length}</span> pending
+          <div className="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB]">
+            <span className="text-[13px] font-bold text-orange-500">{activeItems.length}</span>
+            <span className="text-[13px] font-medium text-gray-500">pending</span>
           </div>
-          <div className="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB] text-[13px] font-medium text-gray-500">
-            <span className="font-bold text-emerald-500">{completedItems.length}</span> done
+          <div className="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB]">
+            <span className="text-[13px] font-bold text-emerald-500">{completedItems.length}</span>
+            <span className="text-[13px] font-medium text-gray-500">done</span>
           </div>
         </div>
       </header>

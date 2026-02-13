@@ -139,17 +139,6 @@ body {
   50% { opacity: 0.6; }
 }
 
-/* Wiggle for attention */
-.wiggle {
-  animation: wiggle 0.5s ease-in-out;
-}
-
-@keyframes wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-3deg); }
-  75% { transform: rotate(3deg); }
-}
-
 /* ===== BUTTON INTERACTIONS ===== */
 
 /* Tap feedback */
@@ -171,22 +160,8 @@ body {
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
-/* FAB hover effect */
-.fab-hover {
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.fab-hover:hover {
-  transform: scale(1.05);
-}
-
-.fab-hover:active {
-  transform: scale(0.95);
-}
-
 /* ===== FOCUS STATES ===== */
 
-/* Custom focus ring for inputs */
 .focus-ring {
   transition: all 0.2s ease;
 }
@@ -228,43 +203,6 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #9CA3AF;
-}
-
-/* ===== UTILITY CLASSES ===== */
-
-/* Glass effect for overlays */
-.glass {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Line clamp utilities */
-.line-clamp-1 {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Smooth transitions for all interactive elements */
-button, a, input, select, textarea {
-  transition: all 0.2s ease;
 }
 
 /* ===== CUSTOM SHADOWS ===== */
@@ -373,14 +311,6 @@ button, a, input, select, textarea {
   100% { background-position: -200% 0; }
 }
 
-/* ===== HAPTIC-LIKE FEEDBACK ===== */
-
-@media (hover: none) {
-  .tap-feedback:active {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-}
-
 /* ===== SAFE AREAS ===== */
 
 .pb-safe {
@@ -389,4 +319,9 @@ button, a, input, select, textarea {
 
 .mb-safe {
   margin-bottom: max(env(safe-area-inset-bottom), 28px);
+}
+
+/* Smooth transitions for interactive elements */
+button, a, input, select, textarea {
+  transition: all 0.2s ease;
 }

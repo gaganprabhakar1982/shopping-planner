@@ -4,47 +4,105 @@ import Checkbox from '../ui/Checkbox'
 export default function ShoppingItem({ item, onToggle, onEdit, onDelete, onUpdateQty }) {
   return (
     <div
-      className={`flex items-center px-4 py-4 gap-3.5 transition-all duration-200 cursor-pointer hover:bg-[#FAFBFC] active:scale-[0.99] ${
-        item.checked ? '' : ''
-      }`}
+      className={`
+        flex items-center 
+        px-4 py-4 
+        gap-3.5 
+        transition-all duration-200 
+        cursor-pointer 
+        hover:bg-[#FAFBFC] 
+        active:scale-[0.995]
+      `}
       onClick={() => onToggle(item.id, item.checked)}
     >
+      {/* Checkbox - rounded square */}
       <Checkbox
         checked={item.checked}
-        onChange={(e) => { e.stopPropagation(); onToggle(item.id, item.checked) }}
+        onChange={(e) => { 
+          e.stopPropagation()
+          onToggle(item.id, item.checked) 
+        }}
       />
 
+      {/* Item Info */}
       <div className="flex-1 min-w-0">
         <p
-          className={`text-[15px] font-medium transition-all duration-200 ${
-            item.checked
+          className={`
+            text-[15px] font-medium 
+            transition-all duration-200 
+            ${item.checked
               ? 'line-through text-gray-400'
               : 'text-[#1A1D21]'
-          }`}
+            }
+          `}
         >
           {item.name}
         </p>
         <p className="text-xs text-gray-400 mt-0.5">
-          {item.packets > 1 ? `${item.qty} x ${item.packets} packets` : `${item.qty} pack`}
+          {item.packets > 1 
+            ? `${item.qty} × ${item.packets} packets` 
+            : item.qty === 1 
+              ? '1 pack' 
+              : `${item.qty} packs`
+          }
         </p>
       </div>
 
+      {/* Quantity Controls - Pill shaped */}
       <div
-        className="flex items-center gap-2 bg-[#FAFBFC] px-2.5 py-1.5 rounded-full"
+        className={`
+          flex items-center gap-2 
+          px-2.5 py-1.5 
+          rounded-full
+          transition-all duration-200
+          ${item.checked 
+            ? 'bg-[#F4F6F8]' 
+            : 'bg-[#FAFBFC]'
+          }
+        `}
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={() => onUpdateQty(item.id, Math.max(1, item.qty - 1))}
-          className="w-[26px] h-[26px] rounded-full bg-white flex items-center justify-center text-gray-500 shadow-sm hover:bg-orange-500 hover:text-white transition-all active:scale-90"
+          disabled={item.qty <= 1}
+          className={`
+            w-[26px] h-[26px] 
+            rounded-full 
+            flex items-center justify-center 
+            transition-all duration-150
+            active:scale-90
+            ${item.qty <= 1
+              ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
+              : 'bg-white text-gray-500 shadow-sm hover:bg-orange-500 hover:text-white'
+            }
+          `}
         >
           <Minus className="w-3.5 h-3.5" strokeWidth={2} />
         </button>
-        <span className="text-sm font-semibold text-[#1A1D21] min-w-[20px] text-center tabular-nums">
+        
+        <span className={`
+          text-sm font-semibold 
+          min-w-[20px] 
+          text-center 
+          tabular-nums
+          ${item.checked ? 'text-gray-400' : 'text-[#1A1D21]'}
+        `}>
           {item.qty}
         </span>
+        
         <button
           onClick={() => onUpdateQty(item.id, item.qty + 1)}
-          className="w-[26px] h-[26px] rounded-full bg-white flex items-center justify-center text-gray-500 shadow-sm hover:bg-orange-500 hover:text-white transition-all active:scale-90"
+          className="
+            w-[26px] h-[26px] 
+            rounded-full 
+            bg-white
+            flex items-center justify-center 
+            text-gray-500 
+            shadow-sm 
+            hover:bg-orange-500 hover:text-white 
+            transition-all duration-150
+            active:scale-90
+          "
         >
           <Plus className="w-3.5 h-3.5" strokeWidth={2} />
         </button>

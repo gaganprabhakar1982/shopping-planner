@@ -15,6 +15,7 @@ export default function CategorySection({
 
   return (
     <div className="bg-white rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB] overflow-hidden slide-up">
+      {/* Category Header */}
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center px-4 py-4 hover:bg-[#FAFBFC] transition-colors"
@@ -26,7 +27,9 @@ export default function CategorySection({
 
         {/* Name + Preview */}
         <div className="flex-1 min-w-0 text-left">
-          <div className="text-[15px] font-semibold text-[#1A1D21] mb-0.5">{category}</div>
+          <div className="text-[15px] font-semibold text-[#1A1D21] mb-0.5">
+            {category}
+          </div>
           <div className="text-xs text-gray-400 truncate">
             {categoryPreviews[category] || 'Items...'}
           </div>
@@ -50,6 +53,7 @@ export default function CategorySection({
         </div>
       </button>
 
+      {/* Expanded Items */}
       {expanded && (
         <div className="border-t border-[#E5E7EB] bg-[#FAFBFC]">
           {items.map((item, i) => (
@@ -64,8 +68,13 @@ export default function CategorySection({
               />
             </div>
           ))}
+          
+          {/* Add Custom Item Button */}
           <button
-            onClick={(e) => { e.stopPropagation(); onAddCustom(category) }}
+            onClick={(e) => { 
+              e.stopPropagation()
+              onAddCustom(category) 
+            }}
             className="flex items-center gap-2 px-4 py-3.5 text-sm font-medium text-orange-500 hover:bg-orange-50 w-full transition-colors border-t border-[#E5E7EB]"
           >
             <Plus className="w-4 h-4" />
