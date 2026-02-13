@@ -83,7 +83,7 @@ export default function MasterListPage() {
   return (
     <div className="relative min-h-screen bg-[#FAFBFC]">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-[#FAFBFC] px-5 pt-4 pb-0">
+      <header className="sticky top-0 z-10 bg-[#FAFBFC] px-6 pt-5 pb-0">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-bold text-[#1A1D21] tracking-tight">
             Master List
@@ -111,7 +111,7 @@ export default function MasterListPage() {
       </header>
 
       {/* Category sections */}
-      <div className="px-5 pb-32 space-y-3">
+      <div className="px-6 pb-32 space-y-3">
         {Object.keys(groupedItems).length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 px-4">
             <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 text-3xl empty-icon">

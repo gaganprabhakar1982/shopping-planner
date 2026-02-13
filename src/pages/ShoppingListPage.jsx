@@ -130,7 +130,7 @@ export default function ShoppingListPage() {
   return (
     <div className="relative min-h-screen bg-[#FAFBFC]">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-[#FAFBFC] px-5 pt-4 pb-5">
+      <header className="sticky top-0 z-10 bg-[#FAFBFC] px-6 pt-5 pb-5">
         {/* Top row: Month selector + Progress ring */}
         <div className="flex items-center justify-between mb-5">
           {/* Month Selector - Pill button with shadow */}

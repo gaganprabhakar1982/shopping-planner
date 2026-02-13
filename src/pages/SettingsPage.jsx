@@ -88,7 +88,7 @@ export default function SettingsPage() {
   return (
     <div className="relative min-h-screen bg-[#FAFBFC]">
       {/* Header */}
-      <header className="px-5 pt-4 pb-5 bg-[#FAFBFC]">
+      <header className="px-6 pt-5 pb-5 bg-[#FAFBFC]">
         <h1 className="text-2xl font-bold text-[#1A1D21] tracking-tight mb-5">
           Settings
         </h1>
@@ -111,7 +111,7 @@ export default function SettingsPage() {
       </header>
 
       {/* Content */}
-      <main className="px-5 pb-32">
+      <main className="px-6 pb-32">
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-3 mb-7 slide-up" style={{ animationDelay: '0.1s' }}>
           <StatCard
