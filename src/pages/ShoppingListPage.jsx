@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, ShoppingCart } from 'lucide-react'
+import { Plus, ChevronDown } from 'lucide-react'
 import { useShoppingList } from '../hooks/useShoppingList'
 import ShoppingList from '../components/shopping/ShoppingList'
 import Modal from '../components/ui/Modal'
@@ -7,6 +7,46 @@ import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 import { categories } from '../data/defaultItems'
+
+function ProgressRing({ progress, size = 52, strokeWidth = 4 }) {
+  const radius = (size - strokeWidth) / 2
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (progress / 100) * circumference
+
+  return (
+    <div className="relative" style={{ width: size, height: size }}>
+      <svg
+        width={size}
+        height={size}
+        style={{ transform: 'rotate(-90deg)' }}
+      >
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="#E5E7EB"
+          strokeWidth={strokeWidth}
+        />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="#10B981"
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+        />
+      </svg>
+      <span className="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-emerald-500">
+        {progress}%
+      </span>
+    </div>
+  )
+}
 
 export default function ShoppingListPage() {
   const {
@@ -79,41 +119,35 @@ export default function ShoppingListPage() {
     await deleteItem(itemId)
   }
 
+  async function handleUpdateQty(itemId, newQty) {
+    await updateItem(itemId, { qty: newQty })
+  }
+
   if (loading) {
     return <LoadingSpinner className="mt-20" size="lg" />
   }
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-[#FAFBFC]">
       {/* Header */}
-      <div className="bg-white px-5 pt-14 pb-5 border-b border-gray-100">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">{monthYear}</h1>
-            <p className="text-sm text-gray-400 mt-0.5">
-              {totalItems === 0
-                ? 'Your shopping list is empty'
-                : `${completedItems.length} of ${totalItems} items done`}
-            </p>
+      <header className="sticky top-0 z-10 bg-[#FAFBFC] px-5 pt-4 pb-5">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB]">
+            <h1 className="text-[15px] font-semibold text-[#1A1D21] tracking-tight">{monthYear}</h1>
+            <ChevronDown className="w-4 h-4 text-gray-400" />
           </div>
-          <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center">
-            <ShoppingCart className="w-6 h-6 text-orange-500" />
-          </div>
+          <ProgressRing progress={progress} />
         </div>
 
-        {/* Progress bar */}
-        {totalItems > 0 && (
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-orange-400 to-orange-500 rounded-full transition-all duration-700 ease-out"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <span className="text-xs font-bold text-orange-500 tabular-nums">{progress}%</span>
+        <div className="flex gap-3">
+          <div className="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB] text-[13px] font-medium text-gray-500">
+            <span className="font-bold text-orange-500">{activeItems.length}</span> pending
           </div>
-        )}
-      </div>
+          <div className="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB] text-[13px] font-medium text-gray-500">
+            <span className="font-bold text-emerald-500">{completedItems.length}</span> done
+          </div>
+        </div>
+      </header>
 
       {/* List */}
       <ShoppingList
@@ -122,12 +156,13 @@ export default function ShoppingListPage() {
         onToggle={toggleItem}
         onEdit={openEditModal}
         onDelete={handleDelete}
+        onUpdateQty={handleUpdateQty}
       />
 
       {/* FAB */}
       <button
         onClick={openAddModal}
-        className="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-orange-400 to-orange-600 text-white rounded-2xl shadow-lg shadow-orange-500/30 flex items-center justify-center hover:shadow-xl hover:shadow-orange-500/40 active:scale-90 transition-all duration-200 z-30"
+        className="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-700 text-white rounded-2xl shadow-[0_8px_24px_rgba(249,115,22,0.4)] flex items-center justify-center hover:scale-105 hover:shadow-[0_12px_32px_rgba(249,115,22,0.5)] active:scale-95 transition-all duration-200 z-30"
       >
         <Plus className="w-6 h-6" strokeWidth={2.5} />
       </button>
@@ -158,7 +193,7 @@ export default function ShoppingListPage() {
               onChange={(e) =>
                 setFormData((f) => ({ ...f, category: e.target.value }))
               }
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-400 focus:bg-white transition-all appearance-none"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-[#1A1D21] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 focus:bg-white transition-all"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>

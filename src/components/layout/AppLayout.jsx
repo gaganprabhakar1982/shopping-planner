@@ -3,7 +3,7 @@ import BottomNav from './BottomNav'
 
 export default function AppLayout() {
   return (
-    <div className="min-h-screen bg-stone-100">
+    <div className="min-h-screen bg-[#FAFBFC]">
       <div className="max-w-lg mx-auto pb-20">
         <Outlet />
       </div>

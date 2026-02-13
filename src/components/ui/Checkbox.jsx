@@ -7,13 +7,13 @@ export default function Checkbox({ checked, onChange, className = '' }) {
       role="checkbox"
       aria-checked={checked}
       onClick={onChange}
-      className={`w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
+      className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
         checked
-          ? 'bg-green-500 border-green-500 check-animate shadow-sm shadow-green-500/30'
-          : 'border-gray-300 hover:border-orange-400 active:scale-90'
+          ? 'bg-emerald-500 border-emerald-500 check-pop'
+          : 'border-gray-300 hover:border-orange-400'
       } ${className}`}
     >
-      {checked && <Check className="w-4 h-4 text-white" strokeWidth={3} />}
+      {checked && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
     </button>
   )
 }

@@ -11,6 +11,32 @@ export const categories = [
   'Other',
 ]
 
+export const categoryEmojis = {
+  'Dairy': '🥛',
+  'Vegetables': '🥬',
+  'Fruits': '🍎',
+  'Grains & Pulses': '🌾',
+  'Spices': '🌶️',
+  'Snacks': '🍪',
+  'Beverages': '🍵',
+  'Household': '🧹',
+  'Personal Care': '🧴',
+  'Other': '📦',
+}
+
+export const categoryPreviews = {
+  'Dairy': 'Milk, Curd, Paneer, Butter, Cheese...',
+  'Vegetables': 'Onion, Tomato, Potato, Carrot, Beans...',
+  'Fruits': 'Apple, Banana, Orange, Grapes...',
+  'Grains & Pulses': 'Rice, Wheat, Dal, Chickpeas...',
+  'Spices': 'Turmeric, Cumin, Coriander, Chili...',
+  'Snacks': 'Biscuits, Chips, Namkeen, Nuts...',
+  'Beverages': 'Tea, Coffee, Juice, Soft Drinks...',
+  'Household': 'Detergent, Soap, Tissue, Cleaner...',
+  'Personal Care': 'Shampoo, Toothpaste, Soap, Lotion...',
+  'Other': 'Miscellaneous items...',
+}
+
 export const defaultMasterItems = [
   // Dairy
   { name: 'Milk', category: 'Dairy', defaultQty: 1, defaultPackets: 2 },

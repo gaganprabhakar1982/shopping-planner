@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Search, PackagePlus, ClipboardList } from 'lucide-react'
+import { Search, Plus, Check, PackagePlus } from 'lucide-react'
 import { useMasterList } from '../hooks/useMasterList'
 import { useShoppingList } from '../hooks/useShoppingList'
 import CategorySection from '../components/master/CategorySection'
@@ -81,44 +81,38 @@ export default function MasterListPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen bg-[#FAFBFC]">
       {/* Header */}
-      <div className="bg-white sticky top-0 z-10">
-        <div className="px-5 pt-14 pb-4">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Master List</h1>
-              <p className="text-sm text-gray-400 mt-0.5">
-                {items.length} items in {Object.keys(groupedItems).length} categories
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center">
-              <ClipboardList className="w-6 h-6 text-orange-500" />
-            </div>
-          </div>
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search items..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-gray-100 border-0 rounded-2xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:bg-white focus:shadow-sm transition-all"
-            />
+      <header className="sticky top-0 z-10 bg-[#FAFBFC] px-5 pt-4 pb-0">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold text-[#1A1D21] tracking-tight">Master List</h1>
+          <div className="flex items-center gap-1.5 bg-teal-50 px-3.5 py-2 rounded-full">
+            <Check className="w-4 h-4 text-teal-500" strokeWidth={2.5} />
+            <span className="text-[13px] font-semibold text-teal-500">{items.length} items</span>
           </div>
         </div>
-        <div className="h-px bg-gray-100" />
-      </div>
+
+        {/* Search Bar */}
+        <div className="relative mb-5">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Search items..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-12 pr-4 py-3.5 bg-white border border-[#E5E7EB] rounded-2xl text-[15px] text-[#1A1D21] placeholder-gray-400 focus:outline-none focus:border-orange-400 focus:ring-[3px] focus:ring-orange-500/10 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+          />
+        </div>
+      </header>
 
       {/* Category sections */}
-      <div className="px-4 py-4 space-y-3">
+      <div className="px-5 pb-32 space-y-3">
         {Object.keys(groupedItems).length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 px-4">
-            <div className="w-20 h-20 bg-gray-100 rounded-3xl flex items-center justify-center mb-5">
-              <PackagePlus className="w-10 h-10 text-gray-300" />
+            <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 text-3xl">
+              📋
             </div>
-            <p className="text-lg font-semibold text-gray-900 mb-1">
+            <p className="text-base font-semibold text-[#1A1D21] mb-1">
               {search ? 'No results' : 'Empty list'}
             </p>
             <p className="text-sm text-gray-400 text-center">
@@ -138,6 +132,14 @@ export default function MasterListPage() {
           ))
         )}
       </div>
+
+      {/* FAB */}
+      <button
+        onClick={() => openCustomModal('Other')}
+        className="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-700 text-white rounded-2xl shadow-[0_8px_24px_rgba(20,184,166,0.4)] flex items-center justify-center hover:scale-105 hover:shadow-[0_12px_32px_rgba(20,184,166,0.5)] active:scale-95 transition-all duration-200 z-30"
+      >
+        <Plus className="w-6 h-6" strokeWidth={2.5} />
+      </button>
 
       {/* Custom item modal */}
       <Modal

@@ -18,13 +18,13 @@
 }
 
 html {
-  background-color: #F5F5F4;
+  background-color: #FAFBFC;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #F5F5F4;
-  color: #111827;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #FAFBFC;
+  color: #1A1D21;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -36,32 +36,41 @@ body {
   }
 }
 
-/* Smooth checked animation */
-.check-animate {
-  animation: checkPop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Slide up animation */
+.slide-up {
+  animation: slideUp 0.4s ease forwards;
 }
-@keyframes checkPop {
-  0% { transform: scale(0.8); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-
-/* Fade in for list items */
-.fade-in {
-  animation: fadeIn 0.25s ease-out;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Sheet slide up */
+/* Check pop */
+.check-pop {
+  animation: checkPop 0.2s ease;
+}
+@keyframes checkPop {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Sheet slide up for modal */
 .sheet-up {
   animation: sheetUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 @keyframes sheetUp {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
+}
+
+/* Modal scale */
+.modal-scale {
+  animation: modalScale 0.3s ease;
+}
+@keyframes modalScale {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 /* Backdrop fade */
