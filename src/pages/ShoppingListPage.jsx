@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, ShoppingCart } from 'lucide-react'
 import { useShoppingList } from '../hooks/useShoppingList'
 import ShoppingList from '../components/shopping/ShoppingList'
 import Modal from '../components/ui/Modal'
@@ -34,6 +34,7 @@ export default function ShoppingListPage() {
     month: 'long',
     year: 'numeric',
   })
+  const progress = totalItems > 0 ? Math.round((completedItems.length / totalItems) * 100) : 0
 
   function openAddModal() {
     setEditingItem(null)
@@ -85,21 +86,31 @@ export default function ShoppingListPage() {
   return (
     <div className="relative min-h-screen">
       {/* Header */}
-      <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 pt-12 pb-6">
-        <h1 className="text-2xl font-bold">{monthYear}</h1>
-        <p className="text-orange-100 text-sm mt-1">
-          {totalItems === 0
-            ? 'No items in your list'
-            : `${completedItems.length}/${totalItems} items bought`}
-        </p>
+      <div className="bg-white px-5 pt-14 pb-5 border-b border-gray-100">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">{monthYear}</h1>
+            <p className="text-sm text-gray-400 mt-0.5">
+              {totalItems === 0
+                ? 'Your shopping list is empty'
+                : `${completedItems.length} of ${totalItems} items done`}
+            </p>
+          </div>
+          <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center">
+            <ShoppingCart className="w-6 h-6 text-orange-500" />
+          </div>
+        </div>
+
+        {/* Progress bar */}
         {totalItems > 0 && (
-          <div className="mt-3 h-2 bg-orange-400/40 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-white rounded-full transition-all duration-500"
-              style={{
-                width: `${(completedItems.length / totalItems) * 100}%`,
-              }}
-            />
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-orange-400 to-orange-500 rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <span className="text-xs font-bold text-orange-500 tabular-nums">{progress}%</span>
           </div>
         )}
       </div>
@@ -116,9 +127,9 @@ export default function ShoppingListPage() {
       {/* FAB */}
       <button
         onClick={openAddModal}
-        className="fixed bottom-20 right-4 w-14 h-14 bg-orange-500 text-white rounded-full shadow-lg shadow-orange-500/30 flex items-center justify-center hover:bg-orange-600 active:scale-95 transition-all z-30"
+        className="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-orange-400 to-orange-600 text-white rounded-2xl shadow-lg shadow-orange-500/30 flex items-center justify-center hover:shadow-xl hover:shadow-orange-500/40 active:scale-90 transition-all duration-200 z-30"
       >
-        <Plus className="w-6 h-6" />
+        <Plus className="w-6 h-6" strokeWidth={2.5} />
       </button>
 
       {/* Add/Edit Modal */}
@@ -127,7 +138,7 @@ export default function ShoppingListPage() {
         onClose={() => setShowAddModal(false)}
         title={editingItem ? 'Edit Item' : 'Add Item'}
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <Input
             label="Item Name"
             placeholder="e.g. Milk"
@@ -139,7 +150,7 @@ export default function ShoppingListPage() {
             autoFocus
           />
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
               Category
             </label>
             <select
@@ -147,7 +158,7 @@ export default function ShoppingListPage() {
               onChange={(e) =>
                 setFormData((f) => ({ ...f, category: e.target.value }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-400 focus:bg-white transition-all appearance-none"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>

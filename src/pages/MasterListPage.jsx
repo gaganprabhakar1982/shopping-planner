@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Search, PackagePlus } from 'lucide-react'
+import { Search, PackagePlus, ClipboardList } from 'lucide-react'
 import { useMasterList } from '../hooks/useMasterList'
 import { useShoppingList } from '../hooks/useShoppingList'
 import CategorySection from '../components/master/CategorySection'
@@ -22,7 +22,6 @@ export default function MasterListPage() {
   })
   const [initialized, setInitialized] = useState(false)
 
-  // Initialize defaults if master list is empty
   useEffect(() => {
     if (!loading && items.length === 0 && !initialized) {
       setInitialized(true)
@@ -30,12 +29,10 @@ export default function MasterListPage() {
     }
   }, [loading, items.length, initialized, initializeDefaults])
 
-  // Set of shopping list item names (lowercase) for quick lookup
   const shoppingListNames = useMemo(() => {
     return new Set(shoppingItems.map((item) => item.name.toLowerCase()))
   }, [shoppingItems])
 
-  // Group by category and filter by search
   const groupedItems = useMemo(() => {
     const filtered = search
       ? items.filter((item) =>
@@ -86,35 +83,46 @@ export default function MasterListPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-white sticky top-0 z-10 border-b border-gray-200">
-        <div className="px-4 pt-12 pb-3">
-          <h1 className="text-xl font-bold text-gray-900">Master List</h1>
-          <p className="text-sm text-gray-500">
-            {items.length} items across {Object.keys(groupedItems).length} categories
-          </p>
-        </div>
-        {/* Search */}
-        <div className="px-4 pb-3">
+      <div className="bg-white sticky top-0 z-10">
+        <div className="px-5 pt-14 pb-4">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Master List</h1>
+              <p className="text-sm text-gray-400 mt-0.5">
+                {items.length} items in {Object.keys(groupedItems).length} categories
+              </p>
+            </div>
+            <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center">
+              <ClipboardList className="w-6 h-6 text-orange-500" />
+            </div>
+          </div>
+          {/* Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="Search items..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-100 border-0 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full pl-11 pr-4 py-3 bg-gray-100 border-0 rounded-2xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:bg-white focus:shadow-sm transition-all"
             />
           </div>
         </div>
+        <div className="h-px bg-gray-100" />
       </div>
 
       {/* Category sections */}
-      <div>
+      <div className="px-4 py-4 space-y-3">
         {Object.keys(groupedItems).length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 px-4">
-            <PackagePlus className="w-12 h-12 text-gray-300 mb-3" />
-            <p className="text-gray-400 text-sm text-center">
-              {search ? 'No items match your search' : 'No items in master list'}
+          <div className="flex flex-col items-center justify-center py-20 px-4">
+            <div className="w-20 h-20 bg-gray-100 rounded-3xl flex items-center justify-center mb-5">
+              <PackagePlus className="w-10 h-10 text-gray-300" />
+            </div>
+            <p className="text-lg font-semibold text-gray-900 mb-1">
+              {search ? 'No results' : 'Empty list'}
+            </p>
+            <p className="text-sm text-gray-400 text-center">
+              {search ? 'Try a different search term' : 'No items in master list'}
             </p>
           </div>
         ) : (
@@ -137,7 +145,7 @@ export default function MasterListPage() {
         onClose={() => setShowCustomModal(false)}
         title={`Add to ${customCategory}`}
       >
-        <form onSubmit={handleAddCustom} className="space-y-4">
+        <form onSubmit={handleAddCustom} className="space-y-5">
           <Input
             label="Item Name"
             placeholder="e.g. Coconut Milk"

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ShoppingCart, Mail, Lock, User } from 'lucide-react'
+import { ShoppingCart, Mail, Lock, User, ArrowRight } from 'lucide-react'
 import Button from '../ui/Button'
 import Input from '../ui/Input'
 import LoadingSpinner from '../ui/LoadingSpinner'
@@ -46,25 +46,28 @@ export default function AuthForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-orange-50 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-orange-50 via-white to-white px-5">
       <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500 rounded-2xl mb-4">
-            <ShoppingCart className="w-8 h-8 text-white" />
+        {/* Logo */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl mb-5 shadow-lg shadow-orange-500/25">
+            <ShoppingCart className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Shopping Planner</h1>
-          <p className="text-gray-500 mt-1">Plan your monthly shopping</p>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Shopping Planner</h1>
+          <p className="text-gray-400 mt-2 text-sm">Plan smarter, shop faster</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
+        {/* Card */}
+        <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-7 border border-gray-100">
+          {/* Toggle */}
+          <div className="flex mb-7 bg-gray-100 rounded-2xl p-1">
             <button
               type="button"
               onClick={() => { setIsLogin(true); setError('') }}
-              className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
                 isLogin
                   ? 'bg-white text-orange-600 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
+                  : 'text-gray-400 hover:text-gray-600'
               }`}
             >
               Log In
@@ -72,10 +75,10 @@ export default function AuthForm() {
             <button
               type="button"
               onClick={() => { setIsLogin(false); setError('') }}
-              className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
                 !isLogin
                   ? 'bg-white text-orange-600 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
+                  : 'text-gray-400 hover:text-gray-600'
               }`}
             >
               Sign Up
@@ -84,30 +87,30 @@ export default function AuthForm() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <div className="relative fade-in">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   type="text"
                   placeholder="Your name"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="pl-10"
+                  className="pl-11"
                 />
               </div>
             )}
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 type="email"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="pl-10"
+                className="pl-11"
               />
             </div>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 type="password"
                 placeholder="Password"
@@ -115,26 +118,27 @@ export default function AuthForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="pl-10"
+                className="pl-11"
               />
             </div>
 
             {error && (
-              <p className="text-sm text-red-500 bg-red-50 px-3 py-2 rounded-lg">
+              <div className="text-sm text-red-600 bg-red-50 px-4 py-3 rounded-xl border border-red-100 fade-in">
                 {error}
-              </p>
+              </div>
             )}
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full"
+              className="w-full mt-2"
               size="lg"
             >
               {loading ? (
                 <LoadingSpinner size="sm" className="mr-2" />
               ) : null}
-              {isLogin ? 'Log In' : 'Create Account'}
+              <span>{isLogin ? 'Log In' : 'Create Account'}</span>
+              {!loading && <ArrowRight className="w-4 h-4 ml-2" />}
             </Button>
           </form>
         </div>

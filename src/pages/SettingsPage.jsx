@@ -5,8 +5,7 @@ import {
   Trash2,
   RotateCcw,
   ListRestart,
-  ChevronRight,
-  Info,
+  Settings,
   Package,
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
@@ -68,71 +67,88 @@ export default function SettingsPage() {
     },
   }
 
+  const initials = (user?.displayName || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="px-4 pt-12 pb-4">
-        <h1 className="text-xl font-bold text-gray-900">Settings</h1>
+      <div className="bg-white px-5 pt-14 pb-5 border-b border-gray-100">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Settings</h1>
+          <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center">
+            <Settings className="w-6 h-6 text-orange-500" />
+          </div>
+        </div>
       </div>
 
-      {/* Account */}
-      <Section title="Account">
-        <div className="flex items-center gap-3 px-4 py-3">
-          <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-            <User className="w-5 h-5 text-orange-600" />
-          </div>
-          <div className="flex-1">
-            <p className="text-sm font-medium text-gray-900">
-              {user?.displayName || 'User'}
-            </p>
-            <p className="text-xs text-gray-500">{user?.email}</p>
-          </div>
-        </div>
-        <SettingsRow
-          icon={LogOut}
-          label="Log Out"
-          danger
-          onClick={() => setConfirmAction('logout')}
-        />
-      </Section>
-
-      {/* List Management */}
-      <Section title="List Management">
-        <SettingsRow
-          icon={ListRestart}
-          label="Start New Month"
-          description="Archive current list and start fresh"
-          onClick={() => setConfirmAction('startNewMonth')}
-        />
-        <SettingsRow
-          icon={Trash2}
-          label="Clear Completed Items"
-          description={`Remove ${completedItems.length} checked items`}
-          onClick={() => setConfirmAction('clearCompleted')}
-          disabled={completedItems.length === 0}
-        />
-      </Section>
-
-      {/* Master List */}
-      <Section title="Master List">
-        <SettingsRow
-          icon={RotateCcw}
-          label="Reset to Defaults"
-          description="Restore original master list items"
-          onClick={() => setConfirmAction('resetMaster')}
-        />
-      </Section>
-
-      {/* About */}
-      <Section title="About">
-        <div className="px-4 py-3 flex items-center gap-3">
-          <Package className="w-5 h-5 text-gray-400" />
-          <div className="flex-1">
-            <p className="text-sm text-gray-700">Shopping Planner</p>
-            <p className="text-xs text-gray-400">Version 1.0.0</p>
+      <div className="px-4 py-4 space-y-4">
+        {/* Profile Card */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-sm shadow-orange-500/20">
+              <span className="text-white text-lg font-bold">{initials}</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-base font-bold text-gray-900 truncate">
+                {user?.displayName || 'User'}
+              </p>
+              <p className="text-sm text-gray-400 truncate">{user?.email}</p>
+            </div>
           </div>
         </div>
-      </Section>
+
+        {/* List Management */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="px-5 py-3 border-b border-gray-100">
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">List Management</span>
+          </div>
+          <SettingsRow
+            icon={ListRestart}
+            label="Start New Month"
+            description="Clear list and start fresh"
+            onClick={() => setConfirmAction('startNewMonth')}
+          />
+          <SettingsRow
+            icon={Trash2}
+            label="Clear Completed"
+            description={`Remove ${completedItems.length} checked items`}
+            onClick={() => setConfirmAction('clearCompleted')}
+            disabled={completedItems.length === 0}
+            last
+          />
+        </div>
+
+        {/* Master List */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="px-5 py-3 border-b border-gray-100">
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Master List</span>
+          </div>
+          <SettingsRow
+            icon={RotateCcw}
+            label="Reset to Defaults"
+            description="Restore original items"
+            onClick={() => setConfirmAction('resetMaster')}
+            last
+          />
+        </div>
+
+        {/* Account */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <SettingsRow
+            icon={LogOut}
+            label="Log Out"
+            danger
+            onClick={() => setConfirmAction('logout')}
+            last
+          />
+        </div>
+
+        {/* About */}
+        <div className="flex items-center justify-center py-6 gap-2">
+          <Package className="w-4 h-4 text-gray-300" />
+          <span className="text-xs text-gray-300 font-medium">Shopping Planner v1.0.0</span>
+        </div>
+      </div>
 
       {/* Confirmation modal */}
       <Modal
@@ -140,13 +156,14 @@ export default function SettingsPage() {
         onClose={() => setConfirmAction(null)}
         title={confirmAction ? confirmMessages[confirmAction]?.title : ''}
       >
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-gray-500 mb-6 leading-relaxed">
           {confirmAction ? confirmMessages[confirmAction]?.message : ''}
         </p>
         <div className="flex gap-3">
           <Button
             variant="secondary"
             className="flex-1"
+            size="lg"
             onClick={() => setConfirmAction(null)}
           >
             Cancel
@@ -154,10 +171,11 @@ export default function SettingsPage() {
           <Button
             variant={confirmAction === 'logout' ? 'danger' : 'primary'}
             className="flex-1"
+            size="lg"
             onClick={handleAction}
             disabled={loading}
           >
-            {loading ? 'Processing...' : 'Confirm'}
+            {loading ? 'Wait...' : 'Confirm'}
           </Button>
         </div>
       </Modal>
@@ -165,40 +183,28 @@ export default function SettingsPage() {
   )
 }
 
-function Section({ title, children }) {
-  return (
-    <div className="mb-4">
-      <h2 className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50">
-        {title}
-      </h2>
-      <div className="bg-white">{children}</div>
-    </div>
-  )
-}
-
-function SettingsRow({ icon: Icon, label, description, danger, disabled, onClick }) {
+function SettingsRow({ icon: Icon, label, description, danger, disabled, onClick, last }) {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`w-full flex items-center gap-3 px-4 py-3 border-b border-gray-100 hover:bg-gray-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed`}
+      className={`w-full flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed active:bg-gray-100 ${
+        !last ? 'border-b border-gray-100' : ''
+      }`}
     >
-      <Icon
-        className={`w-5 h-5 ${danger ? 'text-red-500' : 'text-gray-400'}`}
-      />
+      <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
+        danger ? 'bg-red-50' : 'bg-gray-100'
+      }`}>
+        <Icon className={`w-[18px] h-[18px] ${danger ? 'text-red-500' : 'text-gray-500'}`} />
+      </div>
       <div className="flex-1 text-left">
-        <p
-          className={`text-sm ${
-            danger ? 'text-red-500' : 'text-gray-700'
-          }`}
-        >
+        <p className={`text-sm font-semibold ${danger ? 'text-red-500' : 'text-gray-800'}`}>
           {label}
         </p>
         {description && (
-          <p className="text-xs text-gray-400">{description}</p>
+          <p className="text-xs text-gray-400 mt-0.5">{description}</p>
         )}
       </div>
-      <ChevronRight className="w-4 h-4 text-gray-300" />
     </button>
   )
 }
