@@ -23,7 +23,7 @@ export default function ShoppingList({
 
   if (activeItems.length === 0 && completedItems.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 px-8">
+      <div className="flex flex-col items-center justify-center py-20 pl-[44px] pr-8">
         <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 text-3xl empty-icon">
           🛒
         </div>
@@ -36,7 +36,7 @@ export default function ShoppingList({
   }
 
   return (
-    <div className="px-6 pb-8">
+    <div className="pl-[44px] pr-6 pb-8">
       {/* Active items grouped by category - CARD BASED */}
       {Object.entries(grouped).map(([category, items], idx) => (
         <section 
