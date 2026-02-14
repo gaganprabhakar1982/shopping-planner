@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Search, Plus, Check } from 'lucide-react'
+import { Search, Plus, Check, Package } from 'lucide-react'
 import { useMasterList } from '../hooks/useMasterList'
 import { useShoppingList } from '../hooks/useShoppingList'
 import CategorySection from '../components/master/CategorySection'
@@ -81,46 +81,52 @@ export default function MasterListPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#FAFBFC]">
-      {/* Header */}
-      <header className="sticky top-0 z-10 bg-[#FAFBFC] px-6 pt-5 pb-0">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-[#1A1D21] tracking-tight">
-            Master List
-          </h1>
-          {/* Items count badge */}
-          <div className="flex items-center gap-1.5 bg-teal-50 px-3.5 py-2 rounded-full">
-            <Check className="w-4 h-4 text-teal-500" strokeWidth={2.5} />
-            <span className="text-[13px] font-semibold text-teal-500">
-              {items.length} items
+    <div className="relative min-h-screen">
+      {/* Gradient Header */}
+      <header className="relative bg-gradient-to-br from-teal-500 via-teal-500 to-emerald-500 px-6 pt-6 pb-6 rounded-b-[28px] shadow-[0_8px_32px_rgba(20,184,166,0.2)]">
+        {/* Decorative */}
+        <div className="absolute top-0 right-0 w-36 h-36 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4" />
+
+        <div className="relative flex items-center justify-between mb-5">
+          <div>
+            <p className="text-white/70 text-xs font-semibold uppercase tracking-wider mb-1">Browse Items</p>
+            <h1 className="text-xl font-bold text-white tracking-tight">
+              Master List
+            </h1>
+          </div>
+          <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3.5 py-2 rounded-xl border border-white/10">
+            <Package className="w-4 h-4 text-white/80" />
+            <span className="text-[13px] font-bold text-white">
+              {items.length}
             </span>
+            <span className="text-[13px] font-medium text-white/70">items</span>
           </div>
         </div>
 
         {/* Search Bar */}
-        <div className="relative mb-5">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none z-10" />
           <input
             type="text"
             placeholder="Search items..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-12 pr-4 py-3.5 bg-white border border-[#E5E7EB] rounded-2xl text-[15px] text-[#1A1D21] placeholder-gray-400 focus:outline-none focus:border-orange-400 focus:ring-[3px] focus:ring-orange-500/10 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+            className="w-full pl-12 pr-4 py-3.5 bg-white/95 backdrop-blur-sm border-0 rounded-2xl text-[15px] text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all shadow-soft"
           />
         </div>
       </header>
 
       {/* Category sections */}
-      <div className="px-6 pb-32 space-y-3">
+      <div className="px-5 pb-32 pt-5 space-y-3">
         {Object.keys(groupedItems).length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 px-4">
-            <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 text-3xl empty-icon">
+            <div className="w-20 h-20 bg-gradient-to-br from-teal-100 to-emerald-50 rounded-[20px] flex items-center justify-center mb-5 text-4xl empty-icon shadow-soft">
               📋
             </div>
-            <p className="text-base font-semibold text-[#1A1D21] mb-1">
+            <p className="text-lg font-bold text-slate-800 mb-1.5">
               {search ? 'No results' : 'Empty list'}
             </p>
-            <p className="text-sm text-gray-400 text-center">
+            <p className="text-sm text-slate-400 text-center">
               {search ? 'Try a different search term' : 'No items in master list'}
             </p>
           </div>
@@ -141,7 +147,7 @@ export default function MasterListPage() {
       {/* FAB */}
       <button
         onClick={() => openCustomModal('Other')}
-        className="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-700 text-white rounded-2xl shadow-[0_8px_24px_rgba(20,184,166,0.4)] flex items-center justify-center hover:scale-105 hover:shadow-[0_12px_32px_rgba(20,184,166,0.5)] active:scale-95 transition-all duration-200 z-30"
+        className="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-2xl shadow-fab-teal flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 z-30"
       >
         <Plus className="w-6 h-6" strokeWidth={2.5} />
       </button>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, ChevronDown } from 'lucide-react'
+import { Plus, ChevronDown, ShoppingBag } from 'lucide-react'
 import { useShoppingList } from '../hooks/useShoppingList'
 import ShoppingList from '../components/shopping/ShoppingList'
 import Modal from '../components/ui/Modal'
@@ -8,7 +8,7 @@ import Button from '../components/ui/Button'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 import { categories } from '../data/defaultItems'
 
-function ProgressRing({ progress, size = 52, strokeWidth = 4 }) {
+function ProgressRing({ progress, size = 56, strokeWidth = 5 }) {
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (progress / 100) * circumference
@@ -25,7 +25,7 @@ function ProgressRing({ progress, size = 52, strokeWidth = 4 }) {
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#E5E7EB"
+          stroke="rgba(255,255,255,0.25)"
           strokeWidth={strokeWidth}
         />
         <circle
@@ -33,7 +33,7 @@ function ProgressRing({ progress, size = 52, strokeWidth = 4 }) {
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#10B981"
+          stroke="white"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -41,7 +41,7 @@ function ProgressRing({ progress, size = 52, strokeWidth = 4 }) {
           className="progress-ring-fill"
         />
       </svg>
-      <span className="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-emerald-500">
+      <span className="absolute inset-0 flex items-center justify-center text-[12px] font-bold text-white">
         {progress}%
       </span>
     </div>
@@ -128,50 +128,59 @@ export default function ShoppingListPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#FAFBFC]">
-      {/* Header */}
-      <header className="sticky top-0 z-10 bg-[#FAFBFC] px-6 pt-5 pb-5">
-        {/* Top row: Month selector + Progress ring */}
-        <div className="flex items-center justify-between mb-5">
-          {/* Month Selector - Pill button with shadow */}
-          <button className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB] hover:shadow-md transition-shadow">
-            <h1 className="text-[15px] font-semibold text-[#1A1D21] tracking-tight">
-              {monthYear}
-            </h1>
-            <ChevronDown className="w-4 h-4 text-gray-400" />
-          </button>
-          
+    <div className="relative min-h-screen">
+      {/* Gradient Header */}
+      <header className="relative bg-gradient-to-br from-orange-500 via-orange-500 to-amber-500 px-6 pt-6 pb-8 rounded-b-[28px] shadow-[0_8px_32px_rgba(249,115,22,0.2)]">
+        {/* Decorative element */}
+        <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute bottom-4 left-4 w-20 h-20 bg-white/5 rounded-full" />
+
+        {/* Top row */}
+        <div className="relative flex items-center justify-between mb-5">
+          <div>
+            <p className="text-white/70 text-xs font-semibold uppercase tracking-wider mb-1">Shopping List</p>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold text-white tracking-tight">
+                {monthYear}
+              </h1>
+              <ChevronDown className="w-4 h-4 text-white/60" />
+            </div>
+          </div>
+
           {/* Progress Ring */}
           <ProgressRing progress={progress} />
         </div>
 
-        {/* Stats Pills */}
-        <div className="flex gap-3">
-          <div className="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB]">
-            <span className="text-[13px] font-bold text-orange-500">{activeItems.length}</span>
-            <span className="text-[13px] font-medium text-gray-500">pending</span>
+        {/* Stats row */}
+        <div className="relative flex gap-3">
+          <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-4 py-2.5 rounded-xl border border-white/10">
+            <ShoppingBag className="w-4 h-4 text-white/80" />
+            <span className="text-[13px] font-bold text-white">{activeItems.length}</span>
+            <span className="text-[13px] font-medium text-white/70">pending</span>
           </div>
-          <div className="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB]">
-            <span className="text-[13px] font-bold text-emerald-500">{completedItems.length}</span>
-            <span className="text-[13px] font-medium text-gray-500">done</span>
+          <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-4 py-2.5 rounded-xl border border-white/10">
+            <span className="text-[13px] font-bold text-white">{completedItems.length}</span>
+            <span className="text-[13px] font-medium text-white/70">done</span>
           </div>
         </div>
       </header>
 
       {/* List */}
-      <ShoppingList
-        activeItems={activeItems}
-        completedItems={completedItems}
-        onToggle={toggleItem}
-        onEdit={openEditModal}
-        onDelete={handleDelete}
-        onUpdateQty={handleUpdateQty}
-      />
+      <div className="mt-5">
+        <ShoppingList
+          activeItems={activeItems}
+          completedItems={completedItems}
+          onToggle={toggleItem}
+          onEdit={openEditModal}
+          onDelete={handleDelete}
+          onUpdateQty={handleUpdateQty}
+        />
+      </div>
 
       {/* FAB */}
       <button
         onClick={openAddModal}
-        className="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-700 text-white rounded-2xl shadow-[0_8px_24px_rgba(249,115,22,0.4)] flex items-center justify-center hover:scale-105 hover:shadow-[0_12px_32px_rgba(249,115,22,0.5)] active:scale-95 transition-all duration-200 z-30"
+        className="fixed bottom-24 right-5 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-2xl shadow-fab flex items-center justify-center hover:scale-110 hover:shadow-fab-hover active:scale-95 transition-all duration-300 z-30"
       >
         <Plus className="w-6 h-6" strokeWidth={2.5} />
       </button>
@@ -194,7 +203,7 @@ export default function ShoppingListPage() {
             autoFocus
           />
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
               Category
             </label>
             <select
@@ -202,7 +211,7 @@ export default function ShoppingListPage() {
               onChange={(e) =>
                 setFormData((f) => ({ ...f, category: e.target.value }))
               }
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-[#1A1D21] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 focus:bg-white transition-all"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 focus:bg-white transition-all"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>

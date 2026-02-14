@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ShoppingCart, Mail, Lock, User, ArrowRight } from 'lucide-react'
+import { ShoppingCart, Mail, Lock, User, ArrowRight, Sparkles } from 'lucide-react'
 import Button from '../ui/Button'
 import Input from '../ui/Input'
 import LoadingSpinner from '../ui/LoadingSpinner'
@@ -46,28 +46,39 @@ export default function AuthForm() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-orange-50 via-white to-white px-5">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-orange-400 to-amber-300" />
+
+      {/* Decorative circles */}
+      <div className="absolute top-[-10%] right-[-15%] w-72 h-72 bg-white/10 rounded-full blur-2xl" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-64 h-64 bg-orange-600/20 rounded-full blur-3xl" />
+      <div className="absolute top-[30%] left-[-5%] w-32 h-32 bg-amber-300/20 rounded-full blur-xl" />
+
+      <div className="w-full max-w-sm px-5 relative z-10">
         {/* Logo */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl mb-5 shadow-lg shadow-orange-500/25">
+        <div className="text-center mb-8 slide-up">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-[22px] mb-5 border border-white/30 bounce-in">
             <ShoppingCart className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Shopping Planner</h1>
-          <p className="text-gray-400 mt-2 text-sm">Plan smarter, shop faster</p>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Shopping Planner</h1>
+          <div className="flex items-center justify-center gap-1.5 mt-2">
+            <Sparkles className="w-3.5 h-3.5 text-white/70" />
+            <p className="text-white/70 text-sm font-medium">Plan smarter, shop faster</p>
+          </div>
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-7 border border-gray-100">
+        <div className="bg-white rounded-[24px] shadow-elevated p-7 slide-up" style={{ animationDelay: '0.1s' }}>
           {/* Toggle */}
-          <div className="flex mb-7 bg-gray-100 rounded-2xl p-1">
+          <div className="flex mb-7 bg-slate-100 rounded-2xl p-1.5">
             <button
               type="button"
               onClick={() => { setIsLogin(true); setError('') }}
-              className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
+              className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 ${
                 isLogin
-                  ? 'bg-white text-orange-600 shadow-sm'
-                  : 'text-gray-400 hover:text-gray-600'
+                  ? 'bg-white text-orange-600 shadow-soft'
+                  : 'text-slate-400 hover:text-slate-600'
               }`}
             >
               Log In
@@ -75,10 +86,10 @@ export default function AuthForm() {
             <button
               type="button"
               onClick={() => { setIsLogin(false); setError('') }}
-              className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
+              className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 ${
                 !isLogin
-                  ? 'bg-white text-orange-600 shadow-sm'
-                  : 'text-gray-400 hover:text-gray-600'
+                  ? 'bg-white text-orange-600 shadow-soft'
+                  : 'text-slate-400 hover:text-slate-600'
               }`}
             >
               Sign Up
@@ -88,7 +99,7 @@ export default function AuthForm() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
               <div className="relative fade-in">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 z-10" />
                 <Input
                   type="text"
                   placeholder="Your name"
@@ -99,7 +110,7 @@ export default function AuthForm() {
               </div>
             )}
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 z-10" />
               <Input
                 type="email"
                 placeholder="Email address"
@@ -110,7 +121,7 @@ export default function AuthForm() {
               />
             </div>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 z-10" />
               <Input
                 type="password"
                 placeholder="Password"
@@ -142,6 +153,11 @@ export default function AuthForm() {
             </Button>
           </form>
         </div>
+
+        {/* Footer */}
+        <p className="text-center text-white/50 text-xs mt-6 slide-up" style={{ animationDelay: '0.2s' }}>
+          Your data is securely stored in the cloud
+        </p>
       </div>
     </div>
   )
