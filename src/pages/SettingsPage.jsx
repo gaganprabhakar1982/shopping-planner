@@ -10,7 +10,6 @@ import {
   ChevronRight,
   Edit3,
   Upload,
-  Moon,
   Bell,
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
@@ -154,7 +153,7 @@ export default function SettingsPage() {
             marginBottom: 28,
           }}
         >
-          <StatCard icon={Calendar} iconBg="#EFF6FF" iconColor="#3B82F6" value={lists.length} label="Lists" />
+          <StatCard icon={Calendar} iconBg="#EFF6FF" iconColor="#3B82F6" value={listName} label="Active List" />
           <StatCard icon={Check} iconBg="#ECFDF5" iconColor="#10B981" value={completedItems.length} label="Items Bought" />
           <StatCard icon={BarChart3} iconBg="#F3E8FF" iconColor="#A855F7" value={activeItems.length} label="Pending" />
           <StatCard icon={List} iconBg="#FFF7ED" iconColor="#F97316" value={masterItems.length} label="Master Items" />
@@ -192,11 +191,6 @@ export default function SettingsPage() {
 
         {/* Preferences */}
         <Section title="Preferences">
-          <MenuItem
-            icon={Moon} iconBg="#F0FDFA" iconColor="#14B8A6"
-            title="Dark Mode" subtitle="Easier on the eyes"
-            toggle
-          />
           <MenuItem
             icon={Bell} iconBg="#FFF7ED" iconColor="#F97316"
             title="Reminders" subtitle="Get notified to shop"
@@ -323,7 +317,7 @@ function StatCard({ icon: Icon, iconBg, iconColor, value, label }) {
       >
         <Icon style={{ width: 20, height: 20, color: iconColor }} />
       </div>
-      <p style={{ fontSize: 24, fontWeight: 700, color: '#1A1D21', marginBottom: 2 }}>{value}</p>
+      <p style={{ fontSize: typeof value === 'string' && value.length > 6 ? 15 : 24, fontWeight: 700, color: '#1A1D21', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{value}</p>
       <p style={{ fontSize: 12, fontWeight: 500, color: '#9CA3AF' }}>{label}</p>
     </div>
   )

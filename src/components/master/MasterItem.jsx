@@ -1,12 +1,15 @@
-import { Check, Plus } from 'lucide-react'
+import { Check, Plus, Edit3 } from 'lucide-react'
 
-export default function MasterItem({ item, isInList, onAdd }) {
+export default function MasterItem({ item, isInList, onAdd, onEdit }) {
   return (
     <div
       className="flex items-center"
       style={{ padding: '12px 16px', gap: 12 }}
     >
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div
+        onClick={() => onEdit(item)}
+        style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}
+      >
         <span
           style={{
             fontSize: 14,
@@ -26,6 +29,29 @@ export default function MasterItem({ item, isInList, onAdd }) {
           {item.defaultQty} {item.defaultUnit || 'pcs'}
         </span>
       </div>
+
+      {/* Edit Button */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
+          onEdit(item)
+        }}
+        style={{
+          width: 32,
+          height: 32,
+          borderRadius: 8,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          background: '#F3F4F6',
+          border: 'none',
+          cursor: 'pointer',
+          transition: 'all 0.15s',
+        }}
+      >
+        <Edit3 style={{ width: 14, height: 14, color: '#6B7280' }} />
+      </button>
 
       {/* Add/Added Toggle Button */}
       <button

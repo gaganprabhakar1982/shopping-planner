@@ -1,7 +1,38 @@
 import { Minus, Plus, Trash2 } from 'lucide-react'
 import Checkbox from '../ui/Checkbox'
 
+function getStep(unit) {
+  switch (unit) {
+    case 'g': return 50
+    case 'kg': return 0.25
+    case 'L': return 0.25
+    case 'ml': return 50
+    default: return 1
+  }
+}
+
+function getMinQty(unit) {
+  switch (unit) {
+    case 'g': return 50
+    case 'kg': return 0.25
+    case 'L': return 0.25
+    case 'ml': return 50
+    default: return 1
+  }
+}
+
+function formatQty(qty, unit) {
+  if (unit === 'kg' || unit === 'L') {
+    return qty % 1 === 0 ? qty : qty.toFixed(2).replace(/0$/, '')
+  }
+  return qty
+}
+
 export default function ShoppingItem({ item, onToggle, onEdit, onDelete, onUpdateQty }) {
+  const unit = item.unit || 'pcs'
+  const step = getStep(unit)
+  const minQty = getMinQty(unit)
+  const canDecrement = item.qty > minQty
   return (
     <div
       style={{
@@ -37,7 +68,7 @@ export default function ShoppingItem({ item, onToggle, onEdit, onDelete, onUpdat
           {item.name}
         </p>
         <p style={{ fontSize: 12, color: '#9CA3AF', marginTop: 2 }}>
-          {item.qty} {item.unit || 'pcs'}
+          {formatQty(item.qty, unit)} {unit}
         </p>
       </div>
 
@@ -77,8 +108,8 @@ export default function ShoppingItem({ item, onToggle, onEdit, onDelete, onUpdat
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          onClick={() => onUpdateQty(item.id, Math.max(1, item.qty - 1))}
-          disabled={item.qty <= 1}
+          onClick={() => onUpdateQty(item.id, Math.max(minQty, parseFloat((item.qty - step).toFixed(2))))}
+          disabled={!canDecrement}
           style={{
             width: 26,
             height: 26,
@@ -87,10 +118,10 @@ export default function ShoppingItem({ item, onToggle, onEdit, onDelete, onUpdat
             alignItems: 'center',
             justifyContent: 'center',
             border: 'none',
-            cursor: item.qty <= 1 ? 'not-allowed' : 'pointer',
-            background: item.qty <= 1 ? '#F3F4F6' : '#FFFFFF',
-            color: item.qty <= 1 ? '#D1D5DB' : '#6B7280',
-            boxShadow: item.qty <= 1 ? 'none' : '0 1px 3px rgba(0,0,0,0.1)',
+            cursor: !canDecrement ? 'not-allowed' : 'pointer',
+            background: !canDecrement ? '#F3F4F6' : '#FFFFFF',
+            color: !canDecrement ? '#D1D5DB' : '#6B7280',
+            boxShadow: !canDecrement ? 'none' : '0 1px 3px rgba(0,0,0,0.1)',
             transition: 'all 0.15s',
           }}
         >
@@ -107,11 +138,11 @@ export default function ShoppingItem({ item, onToggle, onEdit, onDelete, onUpdat
             fontVariantNumeric: 'tabular-nums',
           }}
         >
-          {item.qty}
+          {formatQty(item.qty, unit)}
         </span>
 
         <button
-          onClick={() => onUpdateQty(item.id, item.qty + 1)}
+          onClick={() => onUpdateQty(item.id, parseFloat((item.qty + step).toFixed(2)))}
           style={{
             width: 26,
             height: 26,

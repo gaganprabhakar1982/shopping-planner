@@ -11,7 +11,7 @@ import { categories, units } from '../data/defaultItems'
 import { useListContext } from '../context/ListContext'
 
 export default function MasterListPage() {
-  const { items, loading, addMasterItem, initializeDefaults } = useMasterList()
+  const { items, loading, addMasterItem, updateMasterItem, initializeDefaults } = useMasterList()
   const { activeListId } = useListContext()
   const { items: shoppingItems, addItem: addToShoppingList } = useShoppingList(activeListId)
   const [search, setSearch] = useState('')
@@ -23,6 +23,13 @@ export default function MasterListPage() {
     defaultUnit: 'pcs',
   })
   const [initialized, setInitialized] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [editingItem, setEditingItem] = useState(null)
+  const [editForm, setEditForm] = useState({
+    name: '',
+    defaultQty: 1,
+    defaultUnit: 'pcs',
+  })
 
   useEffect(() => {
     if (!loading && items.length === 0 && !initialized) {
@@ -77,6 +84,28 @@ export default function MasterListPage() {
       defaultUnit: customForm.defaultUnit,
     })
     setShowCustomModal(false)
+  }
+
+  function openEditModal(item) {
+    setEditingItem(item)
+    setEditForm({
+      name: item.name,
+      defaultQty: item.defaultQty,
+      defaultUnit: item.defaultUnit || 'pcs',
+    })
+    setShowEditModal(true)
+  }
+
+  async function handleEditSubmit(e) {
+    e.preventDefault()
+    if (!editingItem || !editForm.name.trim()) return
+    await updateMasterItem(editingItem.id, {
+      name: editForm.name.trim(),
+      defaultQty: Number(editForm.defaultQty),
+      defaultUnit: editForm.defaultUnit,
+    })
+    setShowEditModal(false)
+    setEditingItem(null)
   }
 
   if (loading) {
@@ -179,6 +208,7 @@ export default function MasterListPage() {
                 shoppingListNames={shoppingListNames}
                 onAddToList={handleAddToList}
                 onAddCustom={openCustomModal}
+                onEditItem={openEditModal}
               />
             ))}
           </div>
@@ -222,16 +252,18 @@ export default function MasterListPage() {
             required
             autoFocus
           />
-          <div className="flex" style={{ gap: 16 }}>
-            <Input
-              label="Default Qty"
-              type="number"
-              min="1"
-              value={customForm.defaultQty}
-              onChange={(e) =>
-                setCustomForm((f) => ({ ...f, defaultQty: e.target.value }))
-              }
-            />
+          <div style={{ display: 'flex', gap: 16 }}>
+            <div style={{ flex: 1 }}>
+              <Input
+                label="Default Qty"
+                type="number"
+                min="1"
+                value={customForm.defaultQty}
+                onChange={(e) =>
+                  setCustomForm((f) => ({ ...f, defaultQty: e.target.value }))
+                }
+              />
+            </div>
             <div style={{ flex: 1 }}>
               <label
                 style={{ display: 'block', fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 6 }}
@@ -266,6 +298,73 @@ export default function MasterListPage() {
           </div>
           <Button type="submit" className="w-full" size="lg">
             Add Item
+          </Button>
+        </form>
+      </Modal>
+
+      {/* Edit item modal */}
+      <Modal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        title="Edit Item"
+      >
+        <form onSubmit={handleEditSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <Input
+            label="Item Name"
+            placeholder="e.g. Milk"
+            value={editForm.name}
+            onChange={(e) =>
+              setEditForm((f) => ({ ...f, name: e.target.value }))
+            }
+            required
+            autoFocus
+          />
+          <div style={{ display: 'flex', gap: 16 }}>
+            <div style={{ flex: 1 }}>
+              <Input
+                label="Default Qty"
+                type="number"
+                min="1"
+                value={editForm.defaultQty}
+                onChange={(e) =>
+                  setEditForm((f) => ({ ...f, defaultQty: e.target.value }))
+                }
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label
+                style={{ display: 'block', fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 6 }}
+              >
+                Unit
+              </label>
+              <select
+                value={editForm.defaultUnit}
+                onChange={(e) =>
+                  setEditForm((f) => ({ ...f, defaultUnit: e.target.value }))
+                }
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  backgroundColor: '#F9FAFB',
+                  border: '1px solid #E5E7EB',
+                  borderRadius: 12,
+                  color: '#1A1D21',
+                  fontSize: 14,
+                  outline: 'none',
+                  transition: 'all 0.2s',
+                  boxSizing: 'border-box',
+                }}
+              >
+                {units.map((u) => (
+                  <option key={u.value} value={u.value}>
+                    {u.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <Button type="submit" className="w-full" size="lg">
+            Save Changes
           </Button>
         </form>
       </Modal>

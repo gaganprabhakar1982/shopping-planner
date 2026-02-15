@@ -9,75 +9,140 @@ export default function CategorySection({
   shoppingListNames,
   onAddToList,
   onAddCustom,
+  onEditItem,
 }) {
   const [expanded, setExpanded] = useState(false)
   const addedCount = items.filter(i => shoppingListNames.has(i.name.toLowerCase())).length
 
   return (
-    <div className="bg-white rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB] overflow-hidden slide-up">
+    <div
+      style={{
+        background: '#FFFFFF',
+        borderRadius: 16,
+        border: '1px solid #D1D5DB',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+        overflow: 'hidden',
+      }}
+    >
       {/* Category Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center px-4 py-4 hover:bg-[#FAFBFC] transition-colors"
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          padding: '14px 16px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          textAlign: 'left',
+        }}
       >
         {/* Emoji Icon */}
-        <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-xl mr-3.5 flex-shrink-0">
+        <div
+          className="flex items-center justify-center flex-shrink-0"
+          style={{
+            width: 40,
+            height: 40,
+            background: '#FFF7ED',
+            borderRadius: 12,
+            fontSize: 20,
+            marginRight: 14,
+          }}
+        >
           {categoryEmojis[category] || '📦'}
         </div>
 
         {/* Name + Preview */}
-        <div className="flex-1 min-w-0 text-left">
-          <div className="text-[15px] font-semibold text-[#1A1D21] mb-0.5">
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 15, fontWeight: 600, color: '#1A1D21', marginBottom: 2 }}>
             {category}
           </div>
-          <div className="text-xs text-gray-400 truncate">
+          <div style={{ fontSize: 12, color: '#9CA3AF', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {categoryPreviews[category] || 'Items...'}
           </div>
         </div>
 
         {/* Meta: added badge + count + chevron */}
-        <div className="flex items-center gap-2.5 ml-2">
+        <div className="flex items-center" style={{ gap: 10, marginLeft: 8 }}>
           {addedCount > 0 && (
-            <span className="text-[11px] font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-1 rounded-full">
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                color: '#10B981',
+                background: '#ECFDF5',
+                padding: '4px 10px',
+                borderRadius: 999,
+              }}
+            >
               {addedCount} added
             </span>
           )}
-          <span className="text-[13px] font-semibold text-gray-400 bg-[#F4F6F8] px-2.5 py-1 rounded-full">
+          <span
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: '#9CA3AF',
+              background: '#F3F4F6',
+              padding: '4px 10px',
+              borderRadius: 999,
+            }}
+          >
             {items.length}
           </span>
           <ChevronDown
-            className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
-              expanded ? 'rotate-180' : ''
-            }`}
+            style={{
+              width: 20,
+              height: 20,
+              color: '#9CA3AF',
+              transition: 'transform 0.3s',
+              transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+            }}
           />
         </div>
       </button>
 
       {/* Expanded Items */}
       {expanded && (
-        <div className="border-t border-[#E5E7EB] bg-[#FAFBFC]">
+        <div style={{ borderTop: '1px solid #E5E7EB', background: '#FAFBFC' }}>
           {items.map((item, i) => (
             <div
               key={item.id}
-              className={i < items.length - 1 ? 'border-b border-[#E5E7EB]' : ''}
+              style={i < items.length - 1 ? { borderBottom: '1px solid #E5E7EB' } : {}}
             >
               <MasterItem
                 item={item}
                 isInList={shoppingListNames.has(item.name.toLowerCase())}
                 onAdd={onAddToList}
+                onEdit={onEditItem}
               />
             </div>
           ))}
-          
+
           {/* Add Custom Item Button */}
           <button
-            onClick={(e) => { 
+            onClick={(e) => {
               e.stopPropagation()
-              onAddCustom(category) 
+              onAddCustom(category)
             }}
-            className="flex items-center gap-2 px-4 py-3.5 text-sm font-medium text-orange-500 hover:bg-orange-50 w-full transition-colors border-t border-[#E5E7EB]"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '14px 16px',
+              fontSize: 14,
+              fontWeight: 500,
+              color: '#F97316',
+              background: 'none',
+              border: 'none',
+              borderTop: '1px solid #E5E7EB',
+              width: '100%',
+              cursor: 'pointer',
+              textAlign: 'left',
+            }}
           >
-            <Plus className="w-4 h-4" />
+            <Plus style={{ width: 16, height: 16 }} />
             Add custom item
           </button>
         </div>

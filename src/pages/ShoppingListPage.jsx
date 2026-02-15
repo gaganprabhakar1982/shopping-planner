@@ -318,16 +318,18 @@ export default function ShoppingListPage() {
               ))}
             </select>
           </div>
-          <div className="flex" style={{ gap: 16 }}>
-            <Input
-              label="Quantity"
-              type="number"
-              min="1"
-              value={formData.qty}
-              onChange={(e) =>
-                setFormData((f) => ({ ...f, qty: e.target.value }))
-              }
-            />
+          <div style={{ display: 'flex', gap: 16 }}>
+            <div style={{ flex: 1 }}>
+              <Input
+                label="Quantity"
+                type="number"
+                min="1"
+                value={formData.qty}
+                onChange={(e) =>
+                  setFormData((f) => ({ ...f, qty: e.target.value }))
+                }
+              />
+            </div>
             <div style={{ flex: 1 }}>
               <label
                 style={{ display: 'block', fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 6 }}
