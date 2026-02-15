@@ -252,7 +252,7 @@ export default function MasterListPage() {
             required
             autoFocus
           />
-          <div style={{ display: 'flex', gap: 16 }}>
+          <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end' }}>
             <div style={{ flex: 1 }}>
               <Input
                 label="Default Qty"
@@ -277,7 +277,8 @@ export default function MasterListPage() {
                 }
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
+                  height: 46,
+                  padding: '0 16px',
                   backgroundColor: '#F9FAFB',
                   border: '1px solid #E5E7EB',
                   borderRadius: 12,
@@ -319,7 +320,7 @@ export default function MasterListPage() {
             required
             autoFocus
           />
-          <div style={{ display: 'flex', gap: 16 }}>
+          <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end' }}>
             <div style={{ flex: 1 }}>
               <Input
                 label="Default Qty"
@@ -344,7 +345,8 @@ export default function MasterListPage() {
                 }
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
+                  height: 46,
+                  padding: '0 16px',
                   backgroundColor: '#F9FAFB',
                   border: '1px solid #E5E7EB',
                   borderRadius: 12,

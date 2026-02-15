@@ -23,11 +23,14 @@ export default function ShoppingList({
 
   if (activeItems.length === 0 && completedItems.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 pl-[44px] pr-8">
-        <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 text-3xl empty-icon">
+      <div className="flex flex-col items-center justify-center" style={{ padding: '80px 32px' }}>
+        <div
+          className="flex items-center justify-center text-3xl"
+          style={{ width: 64, height: 64, background: '#FFF7ED', borderRadius: 16, marginBottom: 16 }}
+        >
           🛒
         </div>
-        <p className="text-base font-semibold text-[#1A1D21] mb-1">No items yet</p>
+        <p className="text-base font-semibold mb-1" style={{ color: '#1A1D21' }}>No items yet</p>
         <p className="text-sm text-gray-400 text-center leading-relaxed">
           Tap + to add items or browse the Master List
         </p>
@@ -36,34 +39,47 @@ export default function ShoppingList({
   }
 
   return (
-    <div className="pl-[44px] pr-6 pb-8">
-      {/* Active items grouped by category - CARD BASED */}
+    <div style={{ padding: '0 20px 160px' }}>
+      {/* Active items grouped by category */}
       {Object.entries(grouped).map(([category, items], idx) => (
-        <section 
-          key={category} 
-          className="mb-6 slide-up" 
-          style={{ animationDelay: `${idx * 0.1}s` }}
-        >
-          {/* Category Card Container */}
-          <div className="bg-white rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E7EB] overflow-hidden">
-            {/* Category Header - Inside the card */}
-            <div className="flex items-center px-4 py-3 border-b border-[#E5E7EB]">
-              <div className="w-7 h-7 bg-orange-50 rounded-lg flex items-center justify-center text-sm mr-2.5 flex-shrink-0">
+        <section key={category} style={{ marginBottom: 20 }}>
+          {/* Category Card */}
+          <div
+            style={{
+              background: '#FFFFFF',
+              borderRadius: 16,
+              border: '1px solid #D1D5DB',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Category Header */}
+            <div
+              className="flex items-center"
+              style={{ padding: '12px 16px', borderBottom: '1px solid #E5E7EB' }}
+            >
+              <div
+                className="flex items-center justify-center text-sm flex-shrink-0"
+                style={{ width: 28, height: 28, background: '#FFF7ED', borderRadius: 8, marginRight: 10 }}
+              >
                 {categoryEmojis[category] || '📦'}
               </div>
-              <span className="text-sm font-semibold text-[#1A1D21] tracking-tight">
+              <span className="text-sm font-semibold" style={{ color: '#1A1D21' }}>
                 {category}
               </span>
-              <span className="ml-auto text-xs font-medium text-gray-400 bg-[#F4F6F8] px-2.5 py-1 rounded-full">
+              <span
+                className="ml-auto text-xs font-medium"
+                style={{ color: '#9CA3AF', background: '#F3F4F6', padding: '4px 10px', borderRadius: 999 }}
+              >
                 {items.length} {items.length === 1 ? 'item' : 'items'}
               </span>
             </div>
-            
-            {/* Items inside the card */}
+
+            {/* Items */}
             {items.map((item, i) => (
-              <div 
-                key={item.id} 
-                className={i < items.length - 1 ? 'border-b border-[#E5E7EB]' : ''}
+              <div
+                key={item.id}
+                style={i < items.length - 1 ? { borderBottom: '1px solid #E5E7EB' } : {}}
               >
                 <ShoppingItem
                   item={item}
@@ -78,36 +94,48 @@ export default function ShoppingList({
         </section>
       ))}
 
-      {/* Completed section - Gray card container */}
+      {/* Completed section */}
       {completedItems.length > 0 && (
-        <section className="mt-8 slide-up">
-          {/* Completed Header */}
+        <section style={{ marginTop: 28 }}>
           <button
             onClick={() => setShowCompleted(!showCompleted)}
-            className="flex items-center gap-2 mb-3 px-1 w-full"
+            className="flex items-center gap-2 w-full"
+            style={{ marginBottom: 12, paddingLeft: 4 }}
           >
-            <span className="text-[13px] font-semibold text-emerald-500 uppercase tracking-[0.05em]">
+            <span
+              className="text-[13px] font-semibold uppercase"
+              style={{ color: '#10B981', letterSpacing: '0.05em' }}
+            >
               Completed
             </span>
-            <span className="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2.5 py-1 rounded-full">
+            <span
+              className="text-xs font-semibold"
+              style={{ color: '#10B981', background: '#ECFDF5', padding: '4px 10px', borderRadius: 999 }}
+            >
               {completedItems.length}
             </span>
             <div className="ml-auto">
               {showCompleted ? (
-                <ChevronUp className="w-4 h-4 text-emerald-400" />
+                <ChevronUp className="w-4 h-4" style={{ color: '#6EE7B7' }} />
               ) : (
-                <ChevronDown className="w-4 h-4 text-emerald-400" />
+                <ChevronDown className="w-4 h-4" style={{ color: '#6EE7B7' }} />
               )}
             </div>
           </button>
-          
-          {/* Completed Items - Gray background card */}
+
           {showCompleted && (
-            <div className="bg-[#F4F6F8] rounded-2xl overflow-hidden">
+            <div
+              style={{
+                background: '#F3F4F6',
+                borderRadius: 16,
+                border: '1px solid #E5E7EB',
+                overflow: 'hidden',
+              }}
+            >
               {completedItems.map((item, i) => (
-                <div 
-                  key={item.id} 
-                  className={i < completedItems.length - 1 ? 'border-b border-[#E5E7EB]' : ''}
+                <div
+                  key={item.id}
+                  style={i < completedItems.length - 1 ? { borderBottom: '1px solid #E5E7EB' } : {}}
                 >
                   <ShoppingItem
                     item={item}
