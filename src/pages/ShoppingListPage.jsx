@@ -62,7 +62,7 @@ export default function ShoppingListPage() {
     loading: listsLoading,
   } = useListContext()
 
-  useMigration(createList, activeListId, listsLoading)
+  const { migrating } = useMigration(listsLoading)
 
   const {
     activeItems,
@@ -137,7 +137,7 @@ export default function ShoppingListPage() {
     await updateItem(itemId, { qty: newQty })
   }
 
-  if (loading || listsLoading) {
+  if (loading || listsLoading || migrating) {
     return <LoadingSpinner className="mt-20" size="lg" />
   }
 

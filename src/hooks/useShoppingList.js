@@ -8,7 +8,6 @@ import {
   doc,
   query,
   orderBy,
-  where,
   serverTimestamp,
   writeBatch,
 } from 'firebase/firestore'
@@ -21,7 +20,7 @@ export function useShoppingList(listId) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!user || !listId) {
+    if (!user) {
       setItems([])
       setLoading(false)
       return
@@ -29,16 +28,17 @@ export function useShoppingList(listId) {
 
     const q = query(
       collection(db, 'users', user.uid, 'shoppingList'),
-      where('listId', '==', listId),
       orderBy('order', 'asc')
     )
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const list = snapshot.docs.map((doc) => ({
+      const all = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }))
-      setItems(list)
+      // Filter by listId client-side to avoid needing a composite index
+      const filtered = listId ? all.filter((item) => item.listId === listId) : []
+      setItems(filtered)
       setLoading(false)
     }, (error) => {
       console.error('Shopping list listener error:', error)

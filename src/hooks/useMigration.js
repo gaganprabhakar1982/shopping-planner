@@ -1,9 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   collection,
   getDocs,
-  query,
-  where,
   writeBatch,
   doc,
   addDoc,
@@ -12,9 +10,10 @@ import {
 import { db } from '../firebase/config'
 import { useAuth } from '../context/AuthContext'
 
-export function useMigration(createList, activeListId, listsLoading) {
+export function useMigration(listsLoading) {
   const { user } = useAuth()
   const migrated = useRef(false)
+  const [migrating, setMigrating] = useState(false)
 
   useEffect(() => {
     if (!user || migrated.current || listsLoading) return
@@ -29,6 +28,8 @@ export function useMigration(createList, activeListId, listsLoading) {
         const orphans = snapshot.docs.filter((d) => !d.data().listId)
 
         if (orphans.length === 0) return
+
+        setMigrating(true)
 
         // Create a default list
         const now = new Date()
@@ -50,9 +51,13 @@ export function useMigration(createList, activeListId, listsLoading) {
       } catch (error) {
         console.error('Migration error:', error)
         migrated.current = false
+      } finally {
+        setMigrating(false)
       }
     }
 
     migrate()
   }, [user, listsLoading])
+
+  return { migrating }
 }
