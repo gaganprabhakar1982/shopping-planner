@@ -8,19 +8,20 @@ import {
   doc,
   query,
   orderBy,
+  where,
   serverTimestamp,
   writeBatch,
 } from 'firebase/firestore'
 import { db } from '../firebase/config'
 import { useAuth } from '../context/AuthContext'
 
-export function useShoppingList() {
+export function useShoppingList(listId) {
   const { user } = useAuth()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!user) {
+    if (!user || !listId) {
       setItems([])
       setLoading(false)
       return
@@ -28,6 +29,7 @@ export function useShoppingList() {
 
     const q = query(
       collection(db, 'users', user.uid, 'shoppingList'),
+      where('listId', '==', listId),
       orderBy('order', 'asc')
     )
 
@@ -44,22 +46,23 @@ export function useShoppingList() {
     })
 
     return unsubscribe
-  }, [user])
+  }, [user, listId])
 
   const activeItems = items.filter((item) => !item.checked)
   const completedItems = items.filter((item) => item.checked)
 
   async function addItem(itemData) {
-    if (!user) return
+    if (!user || !listId) return
     await addDoc(collection(db, 'users', user.uid, 'shoppingList'), {
       name: itemData.name,
       category: itemData.category || 'Other',
       qty: itemData.qty || 1,
-      packets: itemData.packets || 1,
+      unit: itemData.unit || 'pcs',
       checked: false,
       checkedAt: null,
       addedAt: serverTimestamp(),
       order: items.length,
+      listId,
     })
   }
 

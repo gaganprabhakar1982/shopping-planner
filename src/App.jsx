@@ -6,6 +6,7 @@ import ShoppingListPage from './pages/ShoppingListPage'
 import MasterListPage from './pages/MasterListPage'
 import SettingsPage from './pages/SettingsPage'
 import LoadingSpinner from './components/ui/LoadingSpinner'
+import { ListProvider } from './context/ListContext'
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth()
@@ -51,7 +52,9 @@ export default function App() {
       <Route
         element={
           <ProtectedRoute>
-            <AppLayout />
+            <ListProvider>
+              <AppLayout />
+            </ListProvider>
           </ProtectedRoute>
         }
       >

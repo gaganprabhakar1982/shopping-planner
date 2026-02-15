@@ -2,40 +2,57 @@ import { Check, Plus } from 'lucide-react'
 
 export default function MasterItem({ item, isInList, onAdd }) {
   return (
-    <div className="flex items-center px-4 py-3.5 gap-3 transition-colors hover:bg-white">
-      <span
-        className={`flex-1 text-sm font-medium ${
-          isInList ? 'text-emerald-500' : 'text-[#1A1D21]'
-        }`}
-      >
-        {item.name}
-      </span>
-      
+    <div
+      className="flex items-center"
+      style={{ padding: '12px 16px', gap: 12 }}
+    >
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <span
+          style={{
+            fontSize: 14,
+            fontWeight: 500,
+            color: isInList ? '#10B981' : '#1A1D21',
+          }}
+        >
+          {item.name}
+        </span>
+        <span
+          style={{
+            fontSize: 12,
+            color: '#9CA3AF',
+            marginLeft: 6,
+          }}
+        >
+          {item.defaultQty} {item.defaultUnit || 'pcs'}
+        </span>
+      </div>
+
       {/* Add/Added Toggle Button */}
       <button
-        onClick={(e) => { 
+        onClick={(e) => {
           e.stopPropagation()
-          if (!isInList) onAdd(item) 
+          if (!isInList) onAdd(item)
         }}
         disabled={isInList}
-        className={`
-          w-8 h-8 
-          rounded-lg 
-          border-2 
-          flex items-center justify-center 
-          transition-all duration-200 
-          flex-shrink-0 
-          active:scale-90
-          ${isInList
-            ? 'bg-emerald-500 border-emerald-500 text-white cursor-default'
-            : 'border-[#E5E7EB] bg-white text-gray-400 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-500'
-          }
-        `}
+        style={{
+          width: 32,
+          height: 32,
+          borderRadius: 8,
+          border: isInList ? '2px solid #10B981' : '2px solid #E5E7EB',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          background: isInList ? '#10B981' : '#FFFFFF',
+          color: isInList ? '#FFFFFF' : '#9CA3AF',
+          cursor: isInList ? 'default' : 'pointer',
+          transition: 'all 0.2s',
+        }}
       >
         {isInList ? (
-          <Check className="w-4 h-4" strokeWidth={2.5} />
+          <Check style={{ width: 16, height: 16 }} strokeWidth={2.5} />
         ) : (
-          <Plus className="w-4 h-4" strokeWidth={2.5} />
+          <Plus style={{ width: 16, height: 16 }} strokeWidth={2.5} />
         )}
       </button>
     </div>

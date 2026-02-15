@@ -52,7 +52,7 @@ export function useMasterList() {
       name: itemData.name,
       category: itemData.category || 'Other',
       defaultQty: itemData.defaultQty || 1,
-      defaultPackets: itemData.defaultPackets || 1,
+      defaultUnit: itemData.defaultUnit || 'pcs',
       order: items.length,
     })
   }
